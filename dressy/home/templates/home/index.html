@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+ <!-- New line -->
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>HOME PAGE</title>
+    <script>
+    function tried(appid,merchant_id){
+	    var xmlhttp;
+	    xmlhttp = new XMLHttpRequest();
+	    info = "";
+	    info=info+"apparel_id=" + appid;
+	    info=info+"&merchant_id=" + merchant_id;
+	    xmlhttp.open("GET","/Analytics/tried?"+info,true);
+	    xmlhttp.send();
+    }
+ function triedi(appid,merchant_id){
+	          var xmlhttp;
+	          xmlhttp = new XMLHttpRequest();
+	          info = "";
+	          info=info+"apparel_id=" + appid;
+	          info=info+"&merchant_id=" + merchant_id;
+	          xmlhttp.open("GET","/Analytics/triedi?"+info,true);
+	          xmlhttp.send();
+		}
+
+function getUserID()
+{
+    xmlObject = new XMLHttpRequest();
+    xmlObject.onreadystatechange=function(){
+        if(xmlObject.readyState==4 && xmlObject.status==200)
+        {
+            return xmlObject.responseText;
+        }
+    }
+    xmlObject.open("GET", "/Analytics/giveUserID", false);
+    xmlObject.send();
+    return xmlObject.onreadystatechange();
+}
+
+</script>
+
+    <!-- Bootstrap Core CSS -->
+    {% load static %}
+    <link href={% static "home/css/bootstrap.min.css" %} rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href={% static "home/css/4-col-portfolio.css" %} rel="stylesheet">
+    <script src="https://connect.facebook.net/en_US/all.js"></script>
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+<script>
+
+window.fbAsyncInit = function () {
+    FB.init({
+                appId: '1463271033954595',
+                status: true,
+                cookie: true,
+                xfbml: true,
+                oauth: true,
+        });
+};
+function updateButton(response) {
+        if (response.authResponse) {
+                FB.api('/me', function (info) {
+                        login(response, info);
+                });
+        } else {
+                FB.login(function (response) {
+                        if (response.authResponse) {
+                                FB.api('/me', function (info) {
+                                        login(response, info);
+                                });
+                        } else {}
+                }, {
+                        scope: 'status_update,publish_stream,user_about_me'
+                });
+        }
+}
+
+function fb_invite() {
+        FB.getLoginStatus(updateButton);
+        FB.Event.subscribe('auth.statusChange', updateButton);
+}(function () {
+        var e = document.createElement('script');
+        e.async = true;
+        e.src = document.location.protocol + '//connect.facebook.net/en_US/all.js';
+        document.getElementById('fb-root').appendChild(e);
+}());
+
+function login(response, info) {
+        if (response.authResponse) {
+                // console.log(response);
+                var token = response.authResponse.accessToken;
+                var userid = response.authResponse.userID;
+                var provider = 'facebook';
+                $.getJSON('https://graph.facebook.com/' + userid + '/friends?fields=name&access_token=' + token, function (result) {});
+        }
+}
+var p;
+
+function post_photo(object,appid,merchant_id) {
+        //var u = object.id
+       a = document.getElementById("mine")
+	p = a.src
+	//console.log(a.src)
+        /*for (i = 0; i < 9; i++) {
+                //   console.log(a[i].src);
+                if (a[i].id == object.id) {
+                        p = a[i].src;
+            q=a[i].id;
+                        console.log(p);
+                        break;
+                }
+        }*/
+        user_id = getUserID();
+        FB.ui({
+                method: 'feed',
+                type: 'photo',
+                //console.log("photo"),
+                picture: p,
+                //console.log(q.image),
+                link: 'localhost:8000/Analytics/followed?appid='+appid+'&user_id='+user_id+'&merchant_id='+merchant_id,
+        //        link: 'web.iiit.ac.in'
+        }, function (response) {});
+}﻿ (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r;
+        i[r] = i[r] ||
+        function () {
+                (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date();
+        a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m)
+})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+ga('create', 'UA-56527396-1');
+ga('send', 'pageview');
+</script>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">Dressy</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="navbar-brand" href="/Analytics/login">Login to view Reports</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a class="navbar-brand" href="/Analytics/register">Register</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Dressy Homepage :)
+                </h1>
+            </div>
+        </div>
+        <a href="/accounts/facebook/login"><img src="{% static 'home/login.png' %}" height=50 width=200></a>
+        <!-- /.row -->
+        <br><br><br>
+        <!-- Projects Row -->
+
+        {% for i in  apparel %}
+        <ol>
+            <div class="col-md-3 portfolio-item">
+                <a href="#">
+                    <img class="img-responsive" id="mine" src="{{ i.image.url }}" alt="" style="height: 270px; width: 210px;">
+                    
+                     
+                      
+                </a>
+                <pre>
+                        <li><strong>Apparel_id: {{ i.id }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;<a href="/home/try"><img src="{% static 'home/try.jpeg' %}" height=30 width=60 onclick = "triedi({{i.id}},{{i.merchant_id}})"></a></li><li><strong>Merchant_id: {{ i.merchant_id }}</strong>&nbsp;&nbsp;&nbsp;&nbsp;<img src="{% static 'home/shareFB.jpg' %}" height=30 width=60 onclick="post_photo(this,{{i.id}},{{i.merchant_id}});tried({{i.id}},{{i.merchant_id}})"></li><li><strong>Price: {{ i.price }}</strong>&nbsp;&nbsp;&nbsp;&nbsp; <a href="https://plus.google.com/share?url=www.google.com" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;"><img src="{% static 'home/shareGP.png' %}" onclick="triedi({{i.id}} , {{ i.merchant_id}})" height=30 width=60></a></li>
+                </pre>
+            </div>
+        </ol>
+       
+        {% endfor %}
+
+
+        <hr>
+
+        <!-- Pagination -->
+        <div class="row text-center">
+            <div class="col-lg-12">
+                <ul class="pagination">
+                    <li>
+                        <a href="#">&laquo;</a>
+                    </li>
+                    <li class="active">
+                        <a href="#">1</a>
+                    </li>
+                    <li>
+                        <a href="#">2</a>
+                    </li>
+                    <li>
+                        <a href="#">3</a>
+                    </li>
+                    <li>
+                        <a href="#">4</a>
+                    </li>
+                    <li>
+                        <a href="#">5</a>
+                    </li>
+                    <li>
+                        <a href="#">&raquo;</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Dressy 2014</p>
+                </div>
+            </div>
+            <!-- /.row -->
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+   <!-- jQuery -->
+ 
+    <script src={% static "home/js/jquery.js" %}></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src={% static "home/js/bootstrap.min.js" %}></script>
+
+</body>
+
+</html>
