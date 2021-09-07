@@ -1,7 +1,7 @@
 -e git+https://github.com/django/django.git@e0a98e2374b1d7660ef3841a5bb2626f1c69970a#egg=Django-master
 MySQL-python==1.2.3
 PAM==0.4.2
-Pillow==2.3.0
+Pillow==8.3.2
 SQLAlchemy==0.8.4
 Tempita==0.5.2
 Twisted-Core==13.2.0
